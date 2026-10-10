@@ -1,89 +1,209 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>ReelZone</title>  <style>  
-*{  
-margin:0;  
-padding:0;  
-box-sizing:border-box;  
-font-family:Arial,sans-serif;  
-}  
-  
-body{  
-background:#0f172a;  
-color:white;  
-text-align:center;  
-}  
-  
-header{  
-padding:20px;  
-background:#111827;  
-}  
-  
-.logo{  
-font-size:32px;  
-font-weight:bold;  
-color:#00e5ff;  
-}  
-  
-.hero{  
-padding:60px 20px;  
-}  
-  
-.hero h1{  
-font-size:36px;  
-margin-bottom:15px;  
-}  
-  
-.hero p{  
-font-size:18px;  
-color:#cbd5e1;  
-margin-bottom:25px;  
-}  
-  
-.btn{  
-display:inline-block;  
-padding:12px 25px;  
-background:#00e5ff;  
-color:black;  
-text-decoration:none;  
-font-weight:bold;  
-border-radius:8px;  
-}  
-  
-.features{  
-padding:40px 20px;  
-}  
-  
-.card{  
-background:#1e293b;  
-padding:20px;  
-margin:15px;  
-border-radius:10px;  
-}  
-  
-footer{  
-padding:20px;  
-background:#111827;  
-margin-top:40px;  
-}  
-</style>  </head>  <body>  <header>  
-<div class="logo">🚀 ReelZone</div>  
-</header>  <section class="hero">  
-<h1>Earn, Share & Grow</h1>  
-<p>Welcome to ReelZone. Share reels, invite friends and grow your network.</p>  <a href="#" class="btn">Coming Soon</a>
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f172a">
+<title>ReelZone — Login & Sign Up</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0f172a;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px;text-align:center;background:#111827}
+.logo{font-size:32px;font-weight:bold;color:#00e5ff}
+main{width:100%;max-width:460px;margin:35px auto;padding:16px}
+.card{background:#1e293b;padding:24px;border-radius:16px;box-shadow:0 8px 25px #0002}
+h1{text-align:center;font-size:27px;margin:0 0 10px}
+.subtitle{text-align:center;color:#cbd5e1;line-height:1.5;margin-bottom:25px}
+.tabs{display:flex;gap:10px;margin-bottom:22px}
+.tabs button{flex:1;padding:13px;border:0;border-radius:8px;background:#334155;color:white;font-weight:bold}
+.tabs button.active{background:#00e5ff;color:#07111f}
+label{display:block;margin-top:14px;font-size:14px;color:#e2e8f0}
+input{width:100%;padding:14px;margin-top:7px;border:1px solid #475569;border-radius:8px;background:#0f172a;color:white;font-size:16px}
+button{cursor:pointer}
+.primary{width:100%;padding:14px;margin-top:20px;background:#00e5ff;color:#07111f;border:0;border-radius:8px;font-size:16px;font-weight:bold}
+.primary:disabled{opacity:.6;cursor:wait}
+.secondary{width:100%;padding:13px;margin-top:12px;background:#334155;color:white;border:0;border-radius:8px;font-weight:bold}
+#message{font-size:14px;line-height:1.5;overflow-wrap:anywhere;margin-top:16px}
+.hidden{display:none!important}
+.emailbox{overflow-wrap:anywhere;background:#0f172a;padding:12px;border-radius:8px}
+footer{text-align:center;color:#94a3b8;font-size:13px;padding:25px}
+</style>
+</head>
+<body>
+<header><div class="logo">🚀 ReelZone</div></header>
 
-</section>  <section class="features">  <div class="card">  
-<h2>📱 Mobile Friendly</h2>  
-<p>Works smoothly on every smartphone.</p>  
-</div>  <div class="card">  
-<h2>👥 Referral System</h2>  
-<p>Invite friends and grow your community.</p>  
-</div>  <div class="card">  
-<h2>⚡ Fast & Simple</h2>  
-<p>Easy to use and lightweight platform.</p>  
-</div>  </section>  <footer>  
-<p>© 2026 ReelZone | All Rights Reserved</p>  
-</footer>  </body>  
-</html> 
+<main>
+<section class="card">
+<h1 id="heading">Welcome to ReelZone</h1>
+<p class="subtitle" id="subtitle">अपना अकाउंट बनाइए और ReelZone से जुड़िए।</p>
+
+<div id="authArea">
+<div class="tabs">
+<button type="button" id="signupTab" class="active">Sign Up</button>
+<button type="button" id="loginTab">Login</button>
+</div>
+
+<form id="authForm">
+<label for="email">Email Address</label>
+<input id="email" type="email" placeholder="अपना ईमेल लिखें"
+autocomplete="email" required>
+
+<label for="password">Password</label>
+<input id="password" type="password" placeholder="कम से कम 6 अक्षर"
+autocomplete="new-password" minlength="6" required>
+
+<button class="primary" id="submitBtn" type="submit">Create Account</button>
+</form>
+</div>
+
+<div id="accountArea" class="hidden">
+<p>आप ReelZone में लॉगिन हैं।</p>
+<div class="emailbox" id="userEmail"></div>
+<button class="primary" id="logoutBtn" type="button">Logout</button>
+</div>
+
+<p id="message" role="status" aria-live="polite"></p>
+</section>
+</main>
+
+<footer>© 2026 ReelZone</footer>
+
+<script>
+(function(){
+  const SUPABASE_URL = "https://pbdvuyhfjjwqhiroxofh.supabase.co";
+  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_3sokejTs8gtKJ96dNhsBPQ_2g6PQM7L";
+
+  const authArea = document.getElementById("authArea");
+  const accountArea = document.getElementById("accountArea");
+  const heading = document.getElementById("heading");
+  const subtitle = document.getElementById("subtitle");
+  const message = document.getElementById("message");
+  const signupTab = document.getElementById("signupTab");
+  const loginTab = document.getElementById("loginTab");
+  const submitBtn = document.getElementById("submitBtn");
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+
+  let mode = "signup";
+  let busy = false;
+
+  function say(text){
+    message.textContent = text;
+  }
+
+  function setMode(nextMode){
+    mode = nextMode;
+    signupTab.classList.toggle("active", mode === "signup");
+    loginTab.classList.toggle("active", mode === "login");
+    heading.textContent = mode === "signup" ? "Create Account" : "Welcome Back";
+    subtitle.textContent = mode === "signup"
+      ? "अपना नया ReelZone अकाउंट बनाइए।"
+      : "अपने ReelZone अकाउंट में लॉगिन करें।";
+    submitBtn.textContent = mode === "signup" ? "Create Account" : "Login";
+    passwordInput.autocomplete = mode === "signup" ? "new-password" : "current-password";
+    say("");
+  }
+
+  function showAccount(user){
+    authArea.classList.add("hidden");
+    accountArea.classList.remove("hidden");
+    heading.textContent = "Welcome to ReelZone";
+    subtitle.textContent = "आपका अकाउंट सक्रिय है।";
+    document.getElementById("userEmail").textContent = user.email || "Logged in";
+  }
+
+  function showAuth(){
+    accountArea.classList.add("hidden");
+    authArea.classList.remove("hidden");
+    setMode(mode);
+  }
+
+  signupTab.addEventListener("click", function(){setMode("signup");});
+  loginTab.addEventListener("click", function(){setMode("login");});
+
+  if(!window.supabase){
+    say("Supabase लोड नहीं हुआ। इंटरनेट कनेक्शन जाँचकर पेज फिर खोलें।");
+    return;
+  }
+
+  const client = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+  document.getElementById("authForm").addEventListener("submit", async function(event){
+    event.preventDefault();
+    if(busy) return;
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    busy = true;
+    submitBtn.disabled = true;
+    say("कृपया प्रतीक्षा करें...");
+
+    try{
+      if(mode === "signup"){
+        const {data, error} = await client.auth.signUp({
+          email: email,
+          password: password
+        });
+        if(error) throw error;
+
+        if(data.session && data.user){
+          showAccount(data.user);
+          say("अकाउंट बन गया और लॉगिन सफल हुआ!");
+        }else{
+          say("Sign Up अनुरोध सफल है। अपने ईमेल में Supabase का confirmation link खोलें, फिर Login करें।");
+        }
+      }else{
+        const {data, error} = await client.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+        if(error) throw error;
+        showAccount(data.user);
+        say("Login सफल हुआ!");
+      }
+    }catch(error){
+      say(error.message || "अभी काम पूरा नहीं हुआ। दोबारा कोशिश करें।");
+    }finally{
+      busy = false;
+      submitBtn.disabled = false;
+    }
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", async function(){
+    const {error} = await client.auth.signOut();
+    if(error){
+      say(error.message);
+      return;
+    }
+    showAuth();
+    say("आप Logout हो गए हैं।");
+  });
+
+  client.auth.onAuthStateChange(function(event, session){
+    if(event === "SIGNED_OUT"){
+      showAuth();
+    }else if(session && session.user){
+      showAccount(session.user);
+    }
+  });
+
+  client.auth.getSession().then(function(result){
+    if(result.error){
+      say(result.error.message);
+      return;
+    }
+    if(result.data.session && result.data.session.user){
+      showAccount(result.data.session.user);
+    }
+  }).catch(function(){
+    say("सेशन जाँचने में समस्या हुई। पेज दोबारा खोलें।");
+  });
+})();
+</script>
+</body>
+</html>
